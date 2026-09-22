@@ -1,35 +1,25 @@
-
 class Solution {
-    public List<Integer> luckyNumbers(int[][] matrix) {
-        int N = matrix.length, M = matrix[0].length;
+    public List<Integer> luckyNumbers (int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        ArrayList<Integer> ls = new ArrayList<Integer>();
 
-        List<Integer> rowMin = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            int rMin = Integer.MAX_VALUE;
-            for (int j = 0; j < M; j++) {
-                rMin = Math.min(rMin, matrix[i][j]);
-            }
-            rowMin.add(rMin);
-        }
-
-        List<Integer> colMax = new ArrayList<>();
-        for (int i = 0; i < M; i++) {
-            int cMax = Integer.MIN_VALUE;
-            for (int j = 0; j < N; j++) {
-                cMax = Math.max(cMax, matrix[j][i]);
-            }
-            colMax.add(cMax);
-        }
-
-        List<Integer> luckyNumbers = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (matrix[i][j] == rowMin.get(i) && matrix[i][j] == colMax.get(j)) {
-                    luckyNumbers.add(matrix[i][j]);
+         for (int i=0; i<n; i++){
+             int num = Integer.MAX_VALUE;
+             int index = -1;
+            for (int j=0; j<m; j++){
+                if(matrix[i][j] < num){
+                    num = matrix[i][j];
+                    index = j;
                 }
             }
+             boolean flag = true;
+             for(int row=0; row<n; row++){
+                 if(matrix[row][index] > num ) flag = false;
+             }
+             if(flag) ls.add(num);
         }
 
-        return luckyNumbers;
+        return ls;
     }
 }
