@@ -1,49 +1,35 @@
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int val) { this.val = val; }
-}
-
 class Solution {
+
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
-
-        ListNode mid = getMid(head);
-        ListNode left = sortList(head);
-        ListNode right = sortList(mid);
-
-        return merge(left, right);
-    }
-
-    private ListNode getMid(ListNode head) {
-        ListNode slow = head, fast = head, prev = null;
-
+        
+        ListNode slow = head, fast = head.next;
         while (fast != null && fast.next != null) {
-            prev = slow;
             slow = slow.next;
             fast = fast.next.next;
-        }
-        prev.next = null; // Disconnect the two halves
-
-        return slow;
-    }
-
-    private ListNode merge(ListNode left, ListNode right) {
+        }        
+        ListNode mid = slow.next;
+        slow.next = null;
+        
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+        return merge(left, right);
+    }   
+    private ListNode merge(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(0);
         ListNode tail = dummy;
-
-        while (left != null && right != null) {
-            if (left.val < right.val) {
-                tail.next = left;
-                left = left.next;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                tail.next = l1;
+                l1 = l1.next;
             } else {
-                tail.next = right;
-                right = right.next;
+                tail.next = l2;
+                l2 = l2.next;
             }
             tail = tail.next;
         }
-
-        tail.next = (left != null) ? left : right;
+        
+        tail.next = (l1 != null) ? l1 : l2;
         return dummy.next;
     }
 }
